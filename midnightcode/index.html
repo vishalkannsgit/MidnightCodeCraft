@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aesthetic Title</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    position: relative; /* Ensure absolute positioning is relative to the body */
+    transition: background-color 0.3s ease; /* smooth transition */
+  }
+  h1 {
+    font-size: 1.5em; /* thinner font */
+    margin: 0;
+    transition: color 0.3s ease; /* smooth transition for color change */
+  }
+  .title-dark {
+    color: #fff; /* white color for dark mode */
+  }
+  .title-light {
+    color: #000; /* black color for light mode */
+  }
+  .video-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px; /* adjust spacing */
+  }
+  .video-box {
+    width: 150px; /* adjust width as needed */
+    height: 200px; /* adjust height as needed */
+    background-color: #f0f0f0; /* or any other background color you prefer */
+    border-radius: 10px; /* curved corners */
+    margin: 10px; /* adjust spacing */
+    box-shadow: 0 4px 8px rgba(0, 0, 255, 0.1); /* lighter blue shadow */
+    cursor: pointer; /* add cursor pointer */
+    background-size: cover;
+    background-position: center;
+  }
+  .floating-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #007bff; /* blue color */
+    border-radius: 50%; /* rounded shape */
+    color: white;
+    text-align: center;
+    line-height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* shadow */
+    transition: transform 0.3s ease-in-out; /* smooth transition */
+    z-index: 999; /* ensure it appears on top of other content */
+  }
+  .floating-button:hover {
+    transform: scale(1.1); /* scale up on hover */
+  }
+  /* Dark mode styles */
+  body.dark-mode {
+    background-color: #222; /* dark background color */
+  }
+  .video-box.dark-mode {
+    background-color: #333; /* dark video box background color */
+  }
+  .floating-button.dark-mode {
+    background-color: #fff; /* light floating button background color */
+    color: #333; /* dark floating button text color */
+  }
+  /* Light mode styles */
+  body.light-mode {
+    background-color: #f0f0f0; /* light background color */
+  }
+  .video-box.light-mode {
+    background-color: #f0f0f0; /* light video box background color */
+  }
+  .floating-button.light-mode {
+    background-color: #007bff; /* blue floating button background color */
+  }
+</style>
+</head>
+<body class="dark-mode">
+  <div class="title title-dark">
+    <h1>Aesthetic Title</h1>
+  </div>
+  <div class="video-boxes">
+    <!-- YouTube video boxes -->
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+    <div class="video-box"></div>
+  </div>
+
+  <div class="floating-button" id="add-image-button">+</div>
+
+  <script>
+    const body = document.body;
+    const videoBoxes = document.querySelectorAll('.video-box');
+    let nextBoxIndex = 0;
+
+    const addImageButton = document.getElementById('add-image-button');
+
+    // Functionality to add images
+    addImageButton.addEventListener('click', () => {
+      // Prompt user to select images
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.multiple = true;
+
+      input.onchange = function (e) {
+        const files = e.target.files;
+        const images = Array.from(files);
+
+        // Display images in video boxes
+        images.forEach((image, index) => {
+          const boxIndex = nextBoxIndex + index;
+          if (boxIndex < videoBoxes.length) {
+            const reader = new FileReader();
+            reader.onload = function () {
+              videoBoxes[boxIndex].style.backgroundImage = `url('${reader.result}')`;
+            };
+            reader.readAsDataURL(image);
+          }
+        });
+
+        // Update the index of the next box to fill
+        nextBoxIndex += images.length;
+      };
+
+      input.click();
+    });
+
+    // Toggle between light mode and dark mode
+    const toggleMode = () => {
+      body.classList.toggle('dark-mode');
+      body.classList.toggle('light-mode');
+      document.querySelector('.title').classList.toggle('title-dark');
+      document.querySelector('.title').classList.toggle('title-light');
+    };
+
+    // Event listeners for mode buttons
+    document.getElementById('light-mode-button').addEventListener('click', toggleMode);
+    document.getElementById('dark-mode-button').addEventListener('click', toggleMode);
+  </script>
+</body>
+</html>
